@@ -1,0 +1,52 @@
+[
+    {
+      "question": "куда кладётся результат склейки",
+      "expected_chunk": "merger_guide_001",
+      "min_score": 0.4
+    },
+    {
+      "question": "что делает режим импорта",
+      "expected_chunk": "merger_guide_008",
+      "min_score": 0.4
+    },
+    {
+      "question": "зачем нужна единая шапка для переменных листов",
+      "expected_chunk": "merger_guide_002",
+      "min_score": 0.5
+    },
+    {
+      "question": "как работает проверка выпавших точек",
+      "expected_chunk": "merger_guide_003",
+      "min_score": 0.4
+    },
+    {
+      "question": "что такое дополнительные файлы в маршрутизации",
+      "expected_chunk": "merger_guide_003",
+      "min_score": 0.4
+    },
+    {
+      "question": "зачем нужен прогресс-бар при обработке",
+      "expected_chunk": "merger_guide_004",
+      "min_score": 0.4
+    },
+    {
+      "question": "как обрабатываются ошибки структуры колонок",
+      "expected_chunk": "merger_guide_002",
+      "min_score": 0.4
+    },
+    {
+      "question": "что делает режим экспорта",
+      "expected_chunk": "merger_guide_005",
+      "min_score": 0.4
+    },
+    {
+      "question": "как сохраняются настройки между запусками",
+      "expected_chunk": "merger_guide_006",
+      "min_score": 0.4
+    },
+    {
+      "question": "что такое batch-обработка файлов",
+      "expected_chunk": "merger_guide_007",
+      "min_score": 0.4
+    }
+  ]

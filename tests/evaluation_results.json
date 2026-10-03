@@ -1,0 +1,90 @@
+{
+  "results": [
+    {
+      "question": "куда кладётся результат склейки",
+      "top1_chunk": "merger_guide_001",
+      "top1_score": 0.462,
+      "hit_top1": true,
+      "hit_top3": true,
+      "above_threshold": true
+    },
+    {
+      "question": "что делает режим импорта",
+      "top1_chunk": "merger_guide_008",
+      "top1_score": 0.492,
+      "hit_top1": true,
+      "hit_top3": true,
+      "above_threshold": true
+    },
+    {
+      "question": "зачем нужна единая шапка для переменных листов",
+      "top1_chunk": "merger_guide_002",
+      "top1_score": 0.582,
+      "hit_top1": true,
+      "hit_top3": true,
+      "above_threshold": true
+    },
+    {
+      "question": "как работает проверка выпавших точек",
+      "top1_chunk": "merger_guide_002",
+      "top1_score": 0.373,
+      "hit_top1": false,
+      "hit_top3": false,
+      "above_threshold": false
+    },
+    {
+      "question": "что такое дополнительные файлы в маршрутизации",
+      "top1_chunk": "merger_guide_000",
+      "top1_score": 0.515,
+      "hit_top1": false,
+      "hit_top3": false,
+      "above_threshold": true
+    },
+    {
+      "question": "зачем нужен прогресс-бар при обработке",
+      "top1_chunk": "merger_guide_006",
+      "top1_score": 0.353,
+      "hit_top1": false,
+      "hit_top3": true,
+      "above_threshold": false
+    },
+    {
+      "question": "как обрабатываются ошибки структуры колонок",
+      "top1_chunk": "merger_guide_002",
+      "top1_score": 0.458,
+      "hit_top1": true,
+      "hit_top3": true,
+      "above_threshold": true
+    },
+    {
+      "question": "что делает режим экспорта",
+      "top1_chunk": "merger_guide_008",
+      "top1_score": 0.489,
+      "hit_top1": false,
+      "hit_top3": false,
+      "above_threshold": true
+    },
+    {
+      "question": "как сохраняются настройки между запусками",
+      "top1_chunk": "merger_guide_004",
+      "top1_score": 0.456,
+      "hit_top1": false,
+      "hit_top3": true,
+      "above_threshold": true
+    },
+    {
+      "question": "что такое batch-обработка файлов",
+      "top1_chunk": "merger_guide_007",
+      "top1_score": 0.581,
+      "hit_top1": true,
+      "hit_top3": true,
+      "above_threshold": true
+    }
+  ],
+  "metrics": {
+    "accuracy_top1": 0.5,
+    "accuracy_top3": 0.7,
+    "above_threshold_rate": 0.8,
+    "total_questions": 10
+  }
+}
