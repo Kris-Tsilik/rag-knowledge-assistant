@@ -1,10 +1,12 @@
 import io
 import wave
+
 import requests
 
 from config import YANDEX_API_KEY, YANDEX_FOLDER_ID
 
 TTS_URL = "https://tts.api.cloud.yandex.net/speech/v1/tts:synthesize"
+STT_URL = "https://stt.api.cloud.yandex.net/speech/v1/stt:recognize"
 
 
 def synthesize(text, voice="oksana"):
@@ -27,7 +29,6 @@ def synthesize(text, voice="oksana"):
     except requests.RequestException as error:
         print(f"[WARN] Озвучка не удалась: {error}")
         return None
-    STT_URL = "https://stt.api.cloud.yandex.net/speech/v1/stt:recognize"
 
 
 def recognize(audio_bytes):

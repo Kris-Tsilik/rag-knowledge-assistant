@@ -1,3 +1,5 @@
+import time
+
 from qdrant_client import QdrantClient
 
 from config import QDRANT_API_KEY, QDRANT_URL
@@ -16,13 +18,19 @@ class Searcher:
 
     def search(self, query, top_k=TOP_K):
         query_vector = self.model.embed(query)
-        response = self.qdrant.query_points(
-            collection_name=self.collection_name,
-            query=query_vector,
-            limit=top_k,
-            with_payload=True,
-        )
-        return response.points
+        for attempt in range(3):
+            try:
+                response = self.qdrant.query_points(
+                    collection_name=self.collection_name,
+                    query=query_vector,
+                    limit=top_k,
+                    with_payload=True,
+                )
+                return response.points
+            except Exception as error:
+                print(f"[WARN] Запрос к Qdrant не прошёл (попытка {attempt + 1}): {error}")
+                time.sleep(2 * (attempt + 1))
+        return []
 
     @staticmethod
     def format_context(results):
