@@ -1,57 +1,36 @@
 from searcher import Searcher
 from yandex_gpt_client import YandexGPTClient
 
-SCORE_THRESHOLD = 0.5  # Отсекаем чанки ниже этого порога
+SCORE_THRESHOLD = 0.5
 
 
 class Generator:
-    """Собирает контекст из поиска и запрашивает ответ у YandexGPT."""
+    """Собирает контекст из поиска и отвечает голосом роли."""
 
-    def __init__(self):
-        self.searcher = Searcher()
+    def __init__(self, profile):
+        self.persona = profile["role_data"]
+        self.searcher = Searcher(profile["source_data"]["collection"])
         self.model = YandexGPTClient()
 
-    def _build_context(self, results: list) -> str:
-        filtered = [point for point in results if point.score >= SCORE_THRESHOLD]
-        if not filtered:
-            return ""
-        return self.searcher.format_context(filtered)
+    def _system_prompt(self):
+        p = self.persona
+        return (
+            f"Ты — {p['assistant_name']}. Твой собеседник — {p['audience_age']} лет, "
+            f"он слушает ответ на слух. Тон: {p['tone']}. Отвечай {p['answer_length']}. "
+            f"{p['style']}. Отвечай только на основе предоставленного контекста. "
+            f"Если в контексте нет ответа, скажи: «{p['fallback']}». Не выдумывай факты."
+        )
 
-    def ask(self, question: str) -> str:
-        results = self.searcher.search(question)
-        context = self._build_context(results)
+    def _build_context(self, results):
+        filtered = [r for r in results if r.score >= SCORE_THRESHOLD]
+        return self.searcher.format_context(filtered) if filtered else ""
 
+    def ask(self, question):
+        context = self._build_context(self.searcher.search(question))
         if not context:
-            return "В базе знаний не найдено информации для ответа на этот вопрос."
-
+            return self.persona["fallback"]
         messages = [
-            {
-                "role": "system",
-                "text": (
-                    "Ты — ассистент по документации Excel-мерджера Яндекс Маршрутов. "
-                    "Отвечай только на основе предоставленного контекста. "
-                    "Если в контексте нет ответа, скажи: 'В документации нет информации по этому вопросу'. "
-                    "Не выдумывай факты."
-                ),
-            },
-            {
-                "role": "user",
-                "text": f"Контекст из документации:\n{context}\n\nВопрос: {question}",
-            },
+            {"role": "system", "text": self._system_prompt()},
+            {"role": "user", "text": f"Контекст из базы знаний:\n{context}\n\nВопрос: {question}"},
         ]
         return self.model.complete(messages)
-
-
-if __name__ == "__main__":
-    import sys
-
-    if len(sys.argv) < 2:
-        print('Использование: python src/generator.py "ваш вопрос"')
-        sys.exit(1)
-
-    question = " ".join(sys.argv[1:])
-    generator = Generator()
-
-    print(f"Вопрос: {question}\n")
-    answer = generator.ask(question)
-    print(f"Ответ:\n{answer}")

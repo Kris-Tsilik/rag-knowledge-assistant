@@ -1,13 +1,6 @@
 {
     "name": "merger",
-    "source_file": "merger_guide.md",
-    "collection": "merger_guide",
-    "persona": {
-      "assistant_name": "Помощник мерджера",
-      "audience_age": "взрослый",
-      "tone": "деловой, по делу",
-      "answer_length": "2-4 предложения",
-      "style": "отвечай строго по документации, без воды",
-      "fallback": "В документации нет информации по этому вопросу"
-    }
+    "display_name": "Помощник — документация мерджера",
+    "role": "business_expert",
+    "source": "merger_guide"
   }
