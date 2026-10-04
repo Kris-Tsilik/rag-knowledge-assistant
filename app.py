@@ -7,6 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 
 from generator import Generator
 from profile import list_profiles, load_profile
+from speech import synthesize
 
 st.set_page_config(page_title="RAG-конструктор")
 
@@ -28,13 +29,17 @@ if st.session_state.get("profile") != choice:
     st.session_state.messages = []
     st.rerun()
 
+profile = load_profile(st.session_state.profile)
 generator = get_generator(st.session_state.profile)
+voice = profile["role_data"].get("voice", "oksana")
 
 st.title(display[st.session_state.profile])
 
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.write(msg["text"])
+        if msg.get("audio"):
+            st.audio(msg["audio"], format="audio/ogg")
 
 question = st.chat_input("Спроси что-нибудь...")
 if question:
@@ -44,5 +49,9 @@ if question:
     with st.chat_message("assistant"):
         with st.spinner("Думаю..."):
             answer = generator.ask(question)
+        with st.spinner("Озвучиваю..."):
+            audio = synthesize(answer, voice=voice)
         st.write(answer)
-    st.session_state.messages.append({"role": "assistant", "text": answer})
+        if audio:
+            st.audio(audio, format="audio/ogg")
+    st.session_state.messages.append({"role": "assistant", "text": answer, "audio": audio})
