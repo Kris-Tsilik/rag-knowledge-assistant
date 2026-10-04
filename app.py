@@ -7,7 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 
 from generator import Generator
 from profile import list_profiles, load_profile
-from speech import synthesize
+from speech import recognize, synthesize
 
 st.set_page_config(page_title="RAG-конструктор")
 
@@ -41,7 +41,19 @@ for msg in st.session_state.messages:
         if msg.get("audio"):
             st.audio(msg["audio"], format="audio/ogg")
 
-question = st.chat_input("Спроси что-нибудь...")
+question = None
+typed = st.chat_input("Спроси что-нибудь...")
+recorded = st.sidebar.audio_input("Или скажи вопрос голосом")
+
+if typed:
+    question = typed
+elif recorded is not None and recorded != st.session_state.get("last_audio"):
+    st.session_state.last_audio = recorded
+    with st.spinner("Распознаю..."):
+        question = recognize(recorded)
+    if question:
+        st.info(f"Я услышал: {question}")
+
 if question:
     st.session_state.messages.append({"role": "user", "text": question})
     with st.chat_message("user"):
