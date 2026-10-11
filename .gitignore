@@ -19,7 +19,26 @@ venv/
 .DS_Store
 Thumbs.db
 
-# Project specific
-data/*.pdf
-data/*.txt
+# Build artifacts
+build/
+dist/
+*.spec
+admin_app.exe
+
+# Logs & Temp
 *.log
+temp/
+.cache/
+
+# Uploaded files (PDF source documents)
+data/uploads/
+data/**/*.pdf
+data/**/*.docx
+
+# Generated markdown from PDFs (optional - keep if you want version control over processed text)
+# Uncomment below ONLY IF generated .md files should NOT be committed:
+# data/generated_*.md
+
+# Local configs with secrets
+secrets_local.json
+local_config.yaml
