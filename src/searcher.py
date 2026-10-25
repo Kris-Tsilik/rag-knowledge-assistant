@@ -3,7 +3,7 @@ import time
 from qdrant_client import QdrantClient
 
 from config import QDRANT_API_KEY, QDRANT_URL
-from yandex_gpt_client import YandexGPTClient
+from gigachat_provider import GigaChatClient
 
 TOP_K = 3
 
@@ -14,7 +14,7 @@ class Searcher:
     def __init__(self, collection_name):
         self.collection_name = collection_name
         self.qdrant = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY)
-        self.model = YandexGPTClient()
+        self.model = GigaChatClient()
 
     def search(self, query, top_k=TOP_K):
         query_vector = self.model.embed(query)

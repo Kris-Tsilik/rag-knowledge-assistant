@@ -1,5 +1,5 @@
 from searcher import Searcher
-from yandex_gpt_client import YandexGPTClient
+from gigachat_provider import GigaChatClient
 
 SCORE_THRESHOLD = 0.5
 
@@ -10,7 +10,7 @@ class Generator:
     def __init__(self, profile):
         self.persona = profile["role_data"]
         self.searcher = Searcher(profile["source_data"]["collection"])
-        self.model = YandexGPTClient()
+        self.model = GigaChatClient()
 
     def _system_prompt(self):
         p = self.persona

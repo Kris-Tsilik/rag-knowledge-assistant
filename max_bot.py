@@ -111,31 +111,48 @@ class RagMaxBot:
     def _run_rag_pipeline(self, question: str, profile: dict) -> str:
         """
         Вызов существующего пайплайна поиска и генерации.
-        TODO: раскомментировать после восстановления YandexGPT API.
         """
         try:
-            from src.searcher import search_chunks
-            from src.generator import generate_answer
-            from src.utils import load_json
+            # 1. Добавляем папку src в путь, чтобы внутренние импорты (from config, from searcher) работали
+            import sys
+            from pathlib import Path
+            src_path = str(Path(__file__).parent / "src")
+            if src_path not in sys.path:
+                sys.path.insert(0, src_path)
 
+            # 2. Импортируем реальные классы, которые есть в твоих файлах
+            from searcher import Searcher
+            from generator import Generator
+            from utils import load_json
+
+            # 3. Загружаем конфиг роли
             role_config = load_json(BASE_DIR / "roles" / f"{profile['role_ref']}.json")
+            
+            # 4. Получаем имя коллекции из роутера
             source = self.router.sources[profile["source_ref"]]
             collection = source["collection"]
 
-            chunks = search_chunks(question, collection)
-            if not chunks:
-                return "В этой базе нет ответа на такой вопрос 😅 Попробуй спросить иначе."
+            # 5. Создаём экземпляры классов (у тебя нет функций search_chunks/generate_answer, есть классы)
+            # Generator внутри себя уже создаёт Searcher, но нам нужно передать профиль целиком
+            # В твоем generator.py конструктор принимает profile с ключами role_data и source_data
+            
+            # Собираем профиль в формате, который ожидает Generator
+            full_profile = {
+                "role_data": role_config,
+                "source_data": source
+            }
+            
+            gen = Generator(full_profile)
+            
+            # 6. Вызываем метод ask у генератора
+            answer = gen.ask(question)
+            return answer
 
-            return generate_answer(
-                query=question,
-                chunks=chunks,
-                system_prompt_template=role_config["system_prompt_template"],
-            )
         except Exception as e:
             # Пока облако недоступно — понятная заглушка вместо падения
             return (f"[Режим симуляции] Вопрос: «{question}» | "
                     f"Профиль: {profile['display_name']} | "
-                    f"Ошибка пайплайна: {type(e).__name__}")
+                    f"Ошибка пайплайна: {type(e).__name__}: {e}")
 
     def _deliver(self, chat_id: str, text: str):
         """Отправка через транспорт или печать в консоль (симуляция)."""

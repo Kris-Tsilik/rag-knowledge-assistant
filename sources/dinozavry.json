@@ -1,0 +1,7 @@
+{
+  "id": "dinozavry",
+  "name": "Динозавры",
+  "source_file": "dinozavry.md",
+  "collection": "col_dinozavry",
+  "command_trigger": "Динозавры, вперед!"
+}
